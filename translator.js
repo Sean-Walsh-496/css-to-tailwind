@@ -88,20 +88,20 @@ class Translator{
                 
             })
         }
+
+        else {
+            let returnValue = "undefined";
+            listOfValues.forEach(element => {
+                element[1] = element[1].replaceAll(';', '').replace(' ', '')
+                if (value.toLowerCase() == element[1].toLowerCase()){
+                    returnValue = element[0]
+                }
+            });
+            return returnValue;
+        }
         
         return closestValue;
 
-    }
-
-    static closestCategorical(value, listOfValues){
-        let returnValue = "undefined";
-        listOfValues.forEach(element => {
-            element[1] = element[1].replaceAll(';', '').replace(' ', '')
-            if (value.toLowerCase() == element[1].toLowerCase()){
-                returnValue = element[0]
-            }
-        });
-        return returnValue;
     }
 
     static getFirstTag(text){
@@ -145,19 +145,12 @@ class Translator{
         tagObject.class = "";
         for (let i = 0; i < tagObject.style.length; i++){
             let styleValue = tagObject.style[i][1], styleName = tagObject.style[i][0]; 
-            let output;
+            
 
             const utilObject = this.findUtilObject(styleName, bigList);
-
-            if (isNaN(styleValue[0])){ //insanely sketch
-                output = this.closestCategorical(styleValue, utilObject.nonNumVals);
-            }
-            else {
-                output = this.closestValue(styleValue, utilObject.numVals);
-            }
-
+            let output = this.closestValue(styleValue, utilObject.vals);
             
-            tagObject.class += `${analogues.get(styleName).slice(1)}${output} `;
+            tagObject.class += `${output.slice(1)} `;
         }
     }
     

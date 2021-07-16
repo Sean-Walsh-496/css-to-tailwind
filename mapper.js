@@ -54,6 +54,14 @@ function findValue(text){
     return null;
 }
 
+function findValues(utilObject){
+    for (let i = 0; i < utilObject.vals.length; i++){
+        delete utilObject.vals[i][2];
+        utilObject.vals[i][1] = findValue(utilObject.vals[i][1]);
+    }
+    return utilObject;
+}
+
 function findQuotes(text){
     let indices = [];
     for (let i = 0; i < text.length; i++){
@@ -155,7 +163,8 @@ function numericValue(text){
     return false;
 }
 
-function getValues(collection){
+/* function getValues(collection){
+    console.log(collection);
     let notNums = [], nums = [];
     for (let item of collection){
         for (let i = item[0].length - 1; i >= 0; i--){
@@ -170,12 +179,12 @@ function getValues(collection){
         }
     }
     return [notNums, nums];
-}
+} */
 
 function getCSSClass(tailwinds){
     let classes = [];
     for (let section of tailwinds){
-        classes.push(new UtilClass(findCommonSub(firstCol(section)), ...getValues(section), true));
+        classes.push(new UtilClass(findCommonSub(firstCol(section)), section, true));
     }
     return classes
 }
@@ -185,9 +194,21 @@ removeEmpties(x);
 x = getAllTailwind(x);
 x = getCSSClass(x);
 
-//x = getMap(x);
+for (let i = 0; i < x.length; i++){
+    x[i] = findValues(x[i]);
+}
+
 
 console.log(x.length);
+console.log('[')
 for (let y of x){
-    console.log(y);
-}
+    console.log('   {')
+    console.log(`   name: "${y.name}",`);
+    console.log("   vals: [")
+    for (pair of y.vals){
+        console.log(`       ["${pair[0]}", "${pair[1]}", "${pair[2]}"],`);
+    }
+    console.log('       ],')
+    console.log('   },')
+} 
+console.log(']')

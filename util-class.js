@@ -6,10 +6,9 @@ module.exports = class UtilClass{
      * @param {array} numVals 
      * @param {boolean} canBeNeg 
      */
-    constructor(name, nonNumVals, numVals, canBeNeg){
+    constructor(name, vals, canBeNeg){
         this.name = name;
-        this.nonNumVals = nonNumVals;
-        this.numVals = numVals;
+        this.vals = vals;
         this.canBeNeg = canBeNeg;
     }
 
